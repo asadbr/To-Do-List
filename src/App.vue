@@ -1,13 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <h1>To-Do List</h1>
+    <to-do-form @todo-added="addToDo" />
+    <ul>
+      <li v-for="item in ToDoItems" :key="item.id">
+        <to-do-item :label="item.label" :done="item.done" :id="item.id" />
+      </li>
+    </ul>
   </div>
 </template>
 
+<script>
+import ToDoItem from "@/views/components/ToDoItem";
+import uniqueId from "lodash.uniqueid";
+import ToDoForm from "@/views/components/ToDoForm";
+
+export default {
+  components: { ToDoForm, ToDoItem },
+  data() {
+    return {
+      ToDoItems: [
+        { id: uniqueId("todo-"), label: "Learn Vue", done: false },
+        {
+          id: uniqueId("todo-"),
+          label: "Create a Vue project with the CLI",
+          done: true,
+        },
+        { id: uniqueId("todo-"), label: "Have fun", done: true },
+        { id: uniqueId("todo-"), label: "Create a to-do list", done: false },
+      ],
+    };
+  },
+  methods: {
+    addToDo(toDoLabel) {
+      this.ToDoItems.push({
+        id: uniqueId("todo-"),
+        label: toDoLabel,
+        done: false,
+      });
+    },
+  },
+};
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
